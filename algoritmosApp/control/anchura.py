@@ -5,8 +5,8 @@ expandirlos.
 
 from collections import deque
 
-from utils.indicadores_progreso import ContadorPasos
-from utils.nodos import Nodo, reconstruir_ruta
+from algoritmosApp.utils.indicadores_progreso import ContadorPasos
+from algoritmosApp.utils.nodos import Nodo, reconstruir_ruta
 
 
 def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):

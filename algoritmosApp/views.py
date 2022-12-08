@@ -15,6 +15,7 @@ import json
 import random
 import algoritmosApp.control.eight_puzzle as ep
 import algoritmosApp.control.a_estrella as a_e
+import algoritmosApp.control.anchura as anchura
 from datetime import datetime
 
 #from algoritmosApp.Control.algorithms import inicializar
@@ -341,6 +342,13 @@ def simple_upload(request):
 
 # Create your views here.
 
+def inicializarEstado(estado):
+    estado = ((
+        (int(estado[0]), int(estado[1]), int(estado[2])),
+        (int(estado[3]), int(estado[4]), int(estado[5])),
+        (int(estado[6]), int(estado[7]), int(estado[8])),
+    ))
+    return estado
 
 def algoritmo_estrella(request):
     grafo_data = JSONParser().parse(request)
@@ -348,39 +356,59 @@ def algoritmo_estrella(request):
     estado_objetivo = grafo_data['objetivo']
     estado_inicial = estado_inicial.split(",")
     estado_objetivo = estado_objetivo.split(",")
-    #print(estado_inicial)
     X = ep.HUECO
-    for num in estado_inicial:
-        if(num == "X"):
-            num = X
-    print(estado_inicial)
-    for num in estado_objetivo:
-        if(num == "x"):
-            num = X
-            print("CAMBIAR")
+    # for num in estado_inicial:
+    #     if(num == "X"):
+    #         num = X
+    # print(estado_inicial)
+    # for num in estado_objetivo:
+    #     if(num == "x"):
+    #         num = X
+    #         print("CAMBIAR")
     print(estado_objetivo)
-    estado0 = ((
-        (int(estado_inicial[0]), int(estado_inicial[1]), int(estado_inicial[2])),
-        (int(estado_inicial[3]), int(estado_inicial[4]), int(estado_inicial[5])),
-        (int(estado_inicial[6]), int(estado_inicial[7]), int(estado_inicial[8])),
-    ))
+    # estado0 = ((
+    #     (int(estado_inicial[0]), int(estado_inicial[1]), int(estado_inicial[2])),
+    #     (int(estado_inicial[3]), int(estado_inicial[4]), int(estado_inicial[5])),
+    #     (int(estado_inicial[6]), int(estado_inicial[7]), int(estado_inicial[8])),
+    # ))
     
+    estado0 = inicializarEstado(estado_inicial)
+    estadoF = inicializarEstado(estado_objetivo)
 
-    estadoF = ((
-        (int(estado_objetivo[0]), int(estado_objetivo[1]), int(estado_objetivo[2])),
-        (int(estado_objetivo[3]), int(estado_objetivo[4]), int(estado_objetivo[5])),
-        (int(estado_objetivo[6]), int(estado_objetivo[7]), int(estado_objetivo[8])),
-    ))
+    # estadoF = ((
+    #     (int(estado_objetivo[0]), int(estado_objetivo[1]), int(estado_objetivo[2])),
+    #     (int(estado_objetivo[3]), int(estado_objetivo[4]), int(estado_objetivo[5])),
+    #     (int(estado_objetivo[6]), int(estado_objetivo[7]), int(estado_objetivo[8])),
+    # ))
     # ep.graficar_estado(estado0)
     ruta = a_e.buscar_con_a_estrella(estado0, ep.gen_estados_alcanzables,
                                  heuristica=ep.dist_hamming)
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta)}
-    ep.graficar_ruta(ruta)
+    #ep.graficar_ruta(ruta)
     print(f'Solución de {len(ruta)} pasos')
     print(estado0)
     print(estadoF)
     return  JsonResponse(lista, safe=False)
+
+def algoritmo_anchura(request): 
+    grafo_data = JSONParser().parse(request)
+    estado_inicial = grafo_data['inicial']
+    estado_objetivo = grafo_data['objetivo']
+    estado_inicial = estado_inicial.split(",")
+    estado_objetivo = estado_objetivo.split(",")
+    X = ep.HUECO
+    
+    estado0 = inicializarEstado(estado_inicial)
+    estadoF = inicializarEstado(estado_objetivo)
+    ruta = anchura.buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
+                             ep.es_estado_objetivo)
+    ep._OBJETIVO = estadoF
+    lista = {}
+    lista = {"movimientos": _formatoRuta(ruta)}    
+    print(f'Solución de {len(ruta)} pasos')
+    return  JsonResponse(lista, safe=False)
+
 
 def _formatoRuta(ruta):
     lista_movimientos = []

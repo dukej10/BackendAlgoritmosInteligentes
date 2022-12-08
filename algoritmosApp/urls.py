@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^matriz/([0-9]+)$', views.export_matriz),
     url(r'^quey/([0-9]+)$', views.queyrannne),
     url(r'^cluster/([0-9]+)$', views.clustering),
-    url(r'^puzzle-estrella$', views.algoritmo_estrella)
+    url(r'^puzzle-estrella$', views.algoritmo_estrella),
+    url(r'^puzzle-anchura$', views.algoritmo_anchura)
     
 ]
