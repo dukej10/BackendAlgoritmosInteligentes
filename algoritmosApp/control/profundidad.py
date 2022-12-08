@@ -3,7 +3,7 @@
 import sys
 from collections import deque
 
-from utils.indicadores_progreso import ContadorPasos
+from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 
 
 def buscar_en_profundidad_limitada(

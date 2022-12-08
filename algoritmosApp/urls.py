@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^quey/([0-9]+)$', views.queyrannne),
     url(r'^cluster/([0-9]+)$', views.clustering),
     url(r'^puzzle-estrella$', views.algoritmo_estrella),
-    url(r'^puzzle-anchura$', views.algoritmo_anchura)
-    
+    url(r'^puzzle-anchura$', views.algoritmo_anchura),
+    url(r'^puzzle-profundidad$', views.algoritmo_profundidad),
+    url(r'^puzzle-primero$', views.algoritmo_primero),
 ]

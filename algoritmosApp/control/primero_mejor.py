@@ -3,11 +3,11 @@
 from bisect import insort
 from collections import deque
 
-from utils.indicadores_progreso import ContadorPasos
-from utils.nodos import NodoConHeuristica as Nodo, reconstruir_ruta
+from algoritmosApp.utils.indicadores_progreso import ContadorPasos
+from algoritmosApp.utils.nodos import NodoConHeuristica as Nodo, reconstruir_ruta
 
 
-def buscar_vorazmente(estado0, gen_estados_alcanzables, heuristica):
+def buscar_primero(estado0, gen_estados_alcanzables, heuristica):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
 
@@ -44,7 +44,7 @@ if __name__ == "__main__":
         (6, 4, 8),
     )
     ep.graficar_estado(estado0)
-    ruta = buscar_vorazmente(estado0, ep.gen_estados_alcanzables,
+    ruta = buscar_primero(estado0, ep.gen_estados_alcanzables,
                              heuristica=ep.dist_hamming)
     print(f'Solución de {len(ruta)} pasos')
     ep.graficar_ruta(ruta)

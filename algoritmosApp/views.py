@@ -16,6 +16,8 @@ import random
 import algoritmosApp.control.eight_puzzle as ep
 import algoritmosApp.control.a_estrella as a_e
 import algoritmosApp.control.anchura as anchura
+import algoritmosApp.control.profundidad as profundidad
+import algoritmosApp.control.primero_mejor as primero_mejor
 from datetime import datetime
 
 #from algoritmosApp.Control.algorithms import inicializar
@@ -403,12 +405,43 @@ def algoritmo_anchura(request):
     estadoF = inicializarEstado(estado_objetivo)
     ruta = anchura.buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
                              ep.es_estado_objetivo)
-    ep._OBJETIVO = estadoF
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
     return  JsonResponse(lista, safe=False)
 
+def algoritmo_profundidad(request):
+    grafo_data = JSONParser().parse(request)
+    estado_inicial = grafo_data['inicial']
+    estado_objetivo = grafo_data['objetivo']
+    estado_inicial = estado_inicial.split(",")
+    estado_objetivo = estado_objetivo.split(",")
+    X = ep.HUECO
+    estado0 = inicializarEstado(estado_inicial)
+    estadoF = inicializarEstado(estado_objetivo)
+    ruta = profundidad.buscar_en_profundidad_iterativa(
+        estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
+    lista = {}
+    lista = {"movimientos": _formatoRuta(ruta)}    
+    print(f'Solución de {len(ruta)} pasos')
+    return  JsonResponse(lista, safe=False)
+
+def algoritmo_primero(request):
+    grafo_data = JSONParser().parse(request)
+    estado_inicial = grafo_data['inicial']
+    estado_objetivo = grafo_data['objetivo']
+    estado_inicial = estado_inicial.split(",")
+    estado_objetivo = estado_objetivo.split(",")
+    X = ep.HUECO
+    estado0 = inicializarEstado(estado_inicial)
+    estadoF = inicializarEstado(estado_objetivo)
+    ruta = primero_mejor.buscar_primero(estado0, ep.gen_estados_alcanzables,
+                             heuristica=ep.dist_hamming)
+    lista = {}
+    lista = {"movimientos": _formatoRuta(ruta)}    
+    print(f'Solución de {len(ruta)} pasos')
+    print(f'Solución de {len(ruta)} pasos')
+    return  JsonResponse(lista, safe=False)
 
 def _formatoRuta(ruta):
     lista_movimientos = []
