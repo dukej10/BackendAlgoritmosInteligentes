@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<Graph>
+   <grafoId>66</grafoId>
+   <grafoName>Random2022-05-15 22:56:31.201337</grafoName>
+   <nodes>
+      <node>
+         <id>1</id>
+         <name>Nodo 1</name>
+         <label>N1</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>2</id>
+         <name>Nodo 2</name>
+         <label>N2</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>3</id>
+         <name>Nodo 3</name>
+         <label>N3</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>4</id>
+         <name>Nodo 4</name>
+         <label>N4</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>5</id>
+         <name>Nodo 5</name>
+         <label>N5</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>6</id>
+         <name>Nodo 6</name>
+         <label>N6</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+   </nodes>
+   <links>
+      <link>
+         <source>5</source>
+         <target>2</target>
+         <distance>115</distance>
+      </link>
+      <link>
+         <source>2</source>
+         <target>4</target>
+         <distance>76</distance>
+      </link>
+   </links>
+</Graph>

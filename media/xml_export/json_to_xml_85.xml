@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<Graph>
+   <grafoId>85</grafoId>
+   <grafoName>Random2022-05-15 23:58:22.556594</grafoName>
+   <nodes>
+      <node>
+         <id>1</id>
+         <name>Nodo 1</name>
+         <label>N1</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>2</id>
+         <name>Nodo 2</name>
+         <label>N2</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+      <node>
+         <id>3</id>
+         <name>Nodo 3</name>
+         <label>N3</label>
+         <data>{}</data>
+         <type/>
+         <radius>12.0</radius>
+         <coordenates>None</coordenates>
+      </node>
+   </nodes>
+   <links>
+      <link>
+         <source>3</source>
+         <target>2</target>
+         <distance>154</distance>
+      </link>
+      <link>
+         <source>3</source>
+         <target>1</target>
+         <distance>84</distance>
+      </link>
+   </links>
+</Graph>
