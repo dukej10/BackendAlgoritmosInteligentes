@@ -19,14 +19,16 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):
     :param `es_estado_objetivo`: función que recibe un estado e indica si es el
         estado objetivo
     """
-    contador_pasos = ContadorPasos()
+    conteo = 0
+    #contador_pasos = ContadorPasos()
     nodo = Nodo(estado0, padre=None)
     if es_estado_objetivo(estado0):
         return reconstruir_ruta(nodo)
     frontera = deque([nodo])  # estados por visitar
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
-        next(contador_pasos)
+        conteo = conteo + 1
+        #next(contador_pasos)
         nodo = frontera.popleft()
         #hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         # Si se desea preservar el orden de los hijos generados:
@@ -35,7 +37,7 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):
         for hijo in hijos:
             nodo_hijo = Nodo(estado=hijo, padre=nodo)
             if es_estado_objetivo(hijo):
-                return reconstruir_ruta(nodo_hijo)
+                return reconstruir_ruta(nodo_hijo), conteo
             frontera.append(nodo_hijo)
             considerados.add(hijo)
     return None  # no resuelto

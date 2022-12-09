@@ -403,10 +403,10 @@ def algoritmo_anchura(request):
     
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
-    ruta = anchura.buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
+    ruta, num = anchura.buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
                              ep.es_estado_objetivo)
     lista = {}
-    lista = {"movimientos": _formatoRuta(ruta)}    
+    lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
     return  JsonResponse(lista, safe=False)
 
