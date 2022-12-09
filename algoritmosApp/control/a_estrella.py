@@ -18,18 +18,21 @@ def buscar_con_a_estrella(estado0, gen_estados_alcanzables, heuristica):
     :param heuristica: función que recibe un estado y estima qué tan cerca está
         del estado objetivo; debe retornar 0 si el estado es el estado objetivo
     """
+    conteo = 0
     print("ESTADOS ALCANZABLES:")
-    contador_pasos = ContadorPasos()
+    # contador_pasos = ContadorPasos()
     if isinf(dist := heuristica(estado0)):
         return None  # no resuelto
     frontera = deque([Nodo(estado=estado0, padre=None, costo_actual=0,
                            dist=dist, costo_combinado=0+dist)])
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
-        next(contador_pasos)
+        conteo = conteo + 1
+        print(conteo)
+        # next(contador_pasos)
         nodo = frontera.popleft()
         if nodo.dist == 0:
-            return reconstruir_ruta(nodo)
+            return reconstruir_ruta(nodo), conteo
         hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         for hijo in hijos:
             if not isinf(dist := heuristica(hijo)):

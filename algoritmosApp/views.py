@@ -383,10 +383,10 @@ def algoritmo_estrella(request):
     #     (int(estado_objetivo[6]), int(estado_objetivo[7]), int(estado_objetivo[8])),
     # ))
     # ep.graficar_estado(estado0)
-    ruta = a_e.buscar_con_a_estrella(estado0, ep.gen_estados_alcanzables,
+    ruta, num= a_e.buscar_con_a_estrella(estado0, ep.gen_estados_alcanzables,
                                  heuristica=ep.dist_hamming)
     lista = {}
-    lista = {"movimientos": _formatoRuta(ruta)}
+    lista = {"movimientos": _formatoRuta(ruta), "cantidad": num, "longitudSol": len(ruta)}
     #ep.graficar_ruta(ruta)
     print(f'Solución de {len(ruta)} pasos')
     print(estado0)
