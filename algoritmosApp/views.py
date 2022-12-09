@@ -435,10 +435,10 @@ def algoritmo_primero(request):
     X = ep.HUECO
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
-    ruta = primero_mejor.buscar_primero(estado0, ep.gen_estados_alcanzables,
+    ruta, num = primero_mejor.buscar_primero(estado0, ep.gen_estados_alcanzables,
                              heuristica=ep.dist_hamming)
     lista = {}
-    lista = {"movimientos": _formatoRuta(ruta)}    
+    lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
     print(f'Solución de {len(ruta)} pasos')
     return  JsonResponse(lista, safe=False)

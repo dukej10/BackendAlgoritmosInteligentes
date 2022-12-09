@@ -17,15 +17,17 @@ def buscar_primero(estado0, gen_estados_alcanzables, heuristica):
     :param heuristica: función que recibe un estado y estima qué tan cerca está
         del estado objetivo; debe retornar 0 si el estado es el estado objetivo
     """
-    contador_pasos = ContadorPasos()
+    contador = 0
+    #contador_pasos = ContadorPasos()
     frontera = deque([Nodo(estado=estado0, padre=None,
                            dist=heuristica(estado0))])
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
-        next(contador_pasos)
+        # next(contador_pasos)
         nodo = frontera.popleft()
+        contador += 1
         if nodo.dist == 0:
-            return reconstruir_ruta(nodo)
+            return reconstruir_ruta(nodo), contador
         hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         for hijo in hijos:
             insort(frontera, Nodo(estado=hijo, padre=nodo,
