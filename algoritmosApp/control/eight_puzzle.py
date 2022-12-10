@@ -19,15 +19,6 @@ def _iter_matriz(matriz, con_indice=True):
             yield (i, j, val) if con_indice else val
 
 
-def _graficar_estado(estado, ax):
-    if ax is not plt:
-        ax.clear()
-    ax.matshow(estado, cmap='Blues')
-    for i, j, val in _iter_matriz(estado):
-        if val != HUECO:
-            ax.text(x=j, y=i, s=val, size='xx-large', ha='center', va='center')
-
-
 def _buscar_elemento(matriz, elemento):
     """Retorna el índice de la primera ocurrencia de `elemento` en `matriz`."""
     """
@@ -60,6 +51,8 @@ def _como_hasheable(matriz):
 
 
 def gen_estados_alcanzables(estado):
+    # print("gen_estados_alcanzables")
+    # print(estado)
     """Función generadora de los estados alcanzables a partir de `estado`."""
     i, j = _buscar_elemento(estado, HUECO)
     #M, N = estado.shape  # asumiendo que `estado` es un `np.ndarray`
@@ -77,23 +70,15 @@ def gen_estados_alcanzables(estado):
         estado2[i][j], estado2[i2][j2] = estado2[i2][j2], estado2[i][j]
         yield _como_hasheable(estado2)
 
-
-_OBJETIVO = (
-    (1, 2, 3),
-    (4, 5, 6),
-    (7, 8, X),
-)
-
-
-def es_estado_objetivo(estado):
+def es_estado_objetivo(estado, estadoF):
     """
     Determina si `estado` es el estado objetivo, es decir, si corresponde a un
     problema resuelto.
     """
-    return np.array_equal(estado, _OBJETIVO)
+    return np.array_equal(estado, estadoF)
 
 
-def dist_manhattan(estado):
+def dist_manhattan(estado, estadoF):
     """
     Retorna la distancia Manhattan entre `estado` y el estado objetivo.
     
@@ -106,12 +91,12 @@ def dist_manhattan(estado):
     """
     dist = 0
     for i, j, val in _iter_matriz(estado):
-        i2, j2 = _buscar_elemento(_OBJETIVO, val)
+        i2, j2 = _buscar_elemento(estadoF, val)
         dist += abs(i - i2) + abs(j - j2)
     return dist
 
 
-def dist_hamming(estado):
+def dist_hamming(estado, estadoF):
     """
     Retorna la distancia Hamming entre `estado` y el estado objetivo.
     
@@ -121,4 +106,4 @@ def dist_hamming(estado):
     matriz no es igual al elemento correspondiente en la otra matriz, cuenta
     como una diferencia.
     """
-    return np.not_equal(estado, _OBJETIVO).sum()
+    return np.not_equal(estado, estadoF).sum()
