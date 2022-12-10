@@ -7,7 +7,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 from algoritmosApp.utils.nodos import NodoConHeuristica as Nodo, reconstruir_ruta
 
 
-def buscar_primero(estado0, gen_estados_alcanzables, heuristica):
+def buscar_primero(estado0, gen_estados_alcanzables, estadoF,heuristica):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
 
@@ -21,7 +21,7 @@ def buscar_primero(estado0, gen_estados_alcanzables, heuristica):
     conteo = 0
     #contador_pasos = ContadorPasos()
     frontera = deque([Nodo(estado=estado0, padre=None,
-                           dist=heuristica(estado0))])
+                           dist=heuristica(estado0, estadoF))])
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
         # next(contador_pasos)
@@ -34,22 +34,22 @@ def buscar_primero(estado0, gen_estados_alcanzables, heuristica):
         hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         for hijo in hijos:
             insort(frontera, Nodo(estado=hijo, padre=nodo,
-                                  dist=heuristica(hijo)))
+                                  dist=heuristica(hijo, estadoF)))
             considerados.add(hijo)
     return None  # no resuelto
 
 
-if __name__ == "__main__":
-    import utils.eight_puzzle as ep
+# if __name__ == "__main__":
+#     import utils.eight_puzzle as ep
 
-    X = ep.HUECO
-    estado0 = (
-        (5, 1, 2),
-        (X, 7, 3),
-        (6, 4, 8),
-    )
-    ep.graficar_estado(estado0)
-    ruta = buscar_primero(estado0, ep.gen_estados_alcanzables,
-                             heuristica=ep.dist_hamming)
-    print(f'Solución de {len(ruta)} pasos')
-    ep.graficar_ruta(ruta)
+#     X = ep.HUECO
+#     estado0 = (
+#         (5, 1, 2),
+#         (X, 7, 3),
+#         (6, 4, 8),
+#     )
+#     ep.graficar_estado(estado0)
+#     ruta = buscar_primero(estado0, ep.gen_estados_alcanzables,
+#                              heuristica=ep.dist_hamming)
+#     print(f'Solución de {len(ruta)} pasos')
+#     ep.graficar_ruta(ruta)

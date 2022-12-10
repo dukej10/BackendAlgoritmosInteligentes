@@ -7,7 +7,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 
 
 def buscar_en_profundidad_limitada(
-        estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,
+        estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,estadoF,
         contador_pasos=None):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
@@ -31,6 +31,7 @@ def buscar_en_profundidad_limitada(
     print('Buscando solución...')
     for pasos in contador_pasos or ContadorPasos():
         estado = frontera.pop()
+        
         ruta.append(estado)
         pendientes[-1] -= 1
 
@@ -38,7 +39,7 @@ def buscar_en_profundidad_limitada(
                 hijo for hijo in gen_estados_alcanzables(estado)
                 if hijo not in ruta and hijo not in frontera] )):
            # print("PROFUNDIDAD: ", profundidad)
-            if any(es_estado_objetivo(objetivo := hijo) for hijo in hijos):
+            if any(es_estado_objetivo(objetivo := hijo, estadoF) for hijo in hijos):
                 ruta.append(objetivo)
                 return max_profundidad
             frontera.extend(hijos)
@@ -54,6 +55,7 @@ def buscar_en_profundidad_limitada(
     
 def buscar_en_profundidad_limitada2(
         estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,
+        estadoF,
         contador_pasos=None):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
@@ -69,6 +71,8 @@ def buscar_en_profundidad_limitada2(
     frontera = deque([estado0]) 
     print(frontera) # estados por visitar
     ruta = []
+    lista = []
+    contador = 0
     pendientes = [1]  # `pendientes[i]` es el número de hijos de `ruta[i-1]`
                       # pendientes por visitar
 
@@ -78,13 +82,14 @@ def buscar_en_profundidad_limitada2(
     for pasos in contador_pasos or ContadorPasos():
         print("x ", pasos)
         estado = frontera.pop()
+        print("ESTADO: ", estado)
         ruta.append(estado)
         pendientes[-1] -= 1
 
         if ((profundidad := len(ruta) - 1) < max_profundidad and (hijos := [
                 hijo for hijo in gen_estados_alcanzables(estado)
                 if hijo not in ruta and hijo not in frontera] )):
-            if any(es_estado_objetivo(objetivo := hijo) for hijo in hijos):
+            if any(es_estado_objetivo(objetivo := hijo, estadoF) for hijo in hijos):
                 ruta.append(objetivo)
                 return ruta, pasos
             frontera.extend(hijos)
@@ -100,7 +105,7 @@ def buscar_en_profundidad_limitada2(
 
 
 def buscar_en_profundidad_iterativa(
-        estado0, gen_estados_alcanzables, es_estado_objetivo):
+        estado0, gen_estados_alcanzables, es_estado_objetivo, estadoF):
     contador_pasos = ContadorPasos()
     print('Buscando solución...')
     print(sys.getrecursionlimit())
@@ -109,10 +114,11 @@ def buscar_en_profundidad_iterativa(
         contador_pasos.send(f'{max_profundidad=}:')
         if (profundidad := buscar_en_profundidad_limitada(
                 estado0, gen_estados_alcanzables, es_estado_objetivo,
-                max_profundidad, contador_pasos)):
+                max_profundidad, estadoF,contador_pasos)):
             break
+    print(f'profundidad: {profundidad}')
     ruta, num = buscar_en_profundidad_limitada2(
-        estado0, gen_estados_alcanzables, es_estado_objetivo, profundidad)
+        estado0, gen_estados_alcanzables, es_estado_objetivo, profundidad, estadoF, contador_pasos)
     return ruta, num
     # if (ruta := buscar_en_profundidad_limitada(
     #             estado0, gen_estados_alcanzables, es_estado_objetivo,
@@ -121,17 +127,17 @@ def buscar_en_profundidad_iterativa(
     raise RecursionError('se excedió la profundidad máxima')
 
 
-if __name__ == "__main__":
-    import utils.eight_puzzle as ep
+# if __name__ == "__main__":
+#     import utils.eight_puzzle as ep
 
-    X = ep.HUECO
-    estado0 = (
-        (5, 1, 2),
-        (X, 7, 3),
-        (6, 4, 8),
-    )
-    ep.graficar_estado(estado0)
-    ruta = buscar_en_profundidad_iterativa(
-        estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
-    print(f'Solución de {len(ruta)} pasos')
-    ep.graficar_ruta(ruta)
+#     X = ep.HUECO
+#     estado0 = (
+#         (5, 1, 2),
+#         (X, 7, 3),
+#         (6, 4, 8),
+#     )
+#     ep.graficar_estado(estado0)
+#     ruta = buscar_en_profundidad_iterativa(
+#         estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
+#     print(f'Solución de {len(ruta)} pasos')
+#     ep.graficar_ruta(ruta)

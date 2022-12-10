@@ -8,7 +8,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 from algoritmosApp.utils.nodos import NodoConCostoCombinado as Nodo, reconstruir_ruta
 
 
-def buscar_con_a_estrella(estado0, gen_estados_alcanzables, heuristica):
+def buscar_con_a_estrella(estado0, estadoF, gen_estados_alcanzables, heuristica):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
 
@@ -21,7 +21,7 @@ def buscar_con_a_estrella(estado0, gen_estados_alcanzables, heuristica):
     conteo = 0
     print("ESTADOS ALCANZABLES:")
     # contador_pasos = ContadorPasos()
-    if isinf(dist := heuristica(estado0)):
+    if isinf(dist := heuristica(estado0, estadoF)):
         return None  # no resuelto
     frontera = deque([Nodo(estado=estado0, padre=None, costo_actual=0,
                            dist=dist, costo_combinado=0+dist)])
@@ -35,7 +35,7 @@ def buscar_con_a_estrella(estado0, gen_estados_alcanzables, heuristica):
             return reconstruir_ruta(nodo), conteo
         hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         for hijo in hijos:
-            if not isinf(dist := heuristica(hijo)):
+            if not isinf(dist := heuristica(hijo, estadoF)):
                 costo_hijo = nodo.costo_actual + 1
                 insort(frontera,
                        Nodo(estado=hijo, padre=nodo, costo_actual=costo_hijo,

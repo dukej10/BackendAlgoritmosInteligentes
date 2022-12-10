@@ -9,7 +9,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 from algoritmosApp.utils.nodos import Nodo, reconstruir_ruta
 
 
-def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):
+def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo, estadoF):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
 
@@ -23,7 +23,7 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):
     lista = []
     #contador_pasos = ContadorPasos()
     nodo = Nodo(estado0, padre=None)
-    if es_estado_objetivo(estado0):
+    if es_estado_objetivo(estado0, estadoF):
         return reconstruir_ruta(nodo)
     frontera = deque([nodo])  # estados por visitar
     considerados = {estado0}  # estados en la frontera o ya visitados
@@ -39,7 +39,7 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo):
                  if hijo not in considerados]
         for hijo in hijos:
             nodo_hijo = Nodo(estado=hijo, padre=nodo)
-            if es_estado_objetivo(hijo):
+            if es_estado_objetivo(hijo, estadoF):
                 return reconstruir_ruta(nodo_hijo), conteo
             frontera.append(nodo_hijo)
             considerados.add(hijo)

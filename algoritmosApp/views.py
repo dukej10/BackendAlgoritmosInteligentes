@@ -24,150 +24,6 @@ from datetime import datetime
 #from algoritmosApp.Control.archivos import archivosControl
 #from algoritmosApp.Control.algorithms import inicializarCluster
 
-def clustering(request, id=0):
-    cantidad_clusters = JSONParser().parse(request)
-    nclusters = int(cantidad_clusters["ncluster"])
-    #print("LLEGÓ ", nclusters)
-    graphs = Graphs.objects.get(grafoId=id)
-    grafos_serializer = GrafoSerializer(graphs, many=False)
-
-    nodos = []
-    aristas = []
-
-    grafo =  grafos_serializer.data
-
-    nodes = grafo["nodes"]
-    links = grafo["links"]
-
-    for client in nodos:
-        if client["id"] not in nodes:
-          nodos.append(client["id"])
-
-    for client in links:
-        dictD = (client["source"],client["target"])
-        aristas.append(dictD)
-
-    G=nx.Graph()
-    G.add_nodes_from(nodos)
-    G.add_edges_from(aristas)
-    #A = nx.adjacency_matrix(G)
-    print("/")
-    print("/")
-    print("/")
-    arr = nx.to_numpy_array(G)
-    print("NCLUSTER ", nclusters)
-    print("ADYACENCIAS ", arr)
-    tiempoInicio = time.time()
-    clusters = inicializarCluster(arr, nclusters)
-    tiempoTotal = time.time() - tiempoInicio
-    nodos = list(G.nodes)
-    print("")
-    print("")
-    print("")
-    index = []
-    listas =[]
-    for clave, valor in clusters.items():  
-        for posicion in valor:
-            index.append(nodos[posicion])
-        listas.append(index)
-        index = []
-        
-    print("Listas ", listas)
-    print("CLUSTER")
-    print(clusters)
-    print("")
-    print("")
-    print("")
-    grafo = Graphs(grafoName= id+ " C", nodes=nodes, links=links)
-    k = 0
-    aux = None
-    aristas = []
-    for i in listas:
-        k = 0
-        print("CLUSTER ", i)
-        #print("CANTIDAD ARISTAS ", len(grafo.links))
-        while k < len(grafo.links):
-                if grafo.links[k]["source"] in i and grafo.links[k]["target"] in i:
-                    print("Aristas ",grafo.links[k])
-                    aristas.append(grafo.links[k])
-                k = k+1
-    #print("LINKS ", aristas)
-    indice = 0
-    for clave in clusters.keys():
-        clusters[clave] = listas[indice]
-        indice = indice +1
-        
-    return JsonResponse({ "grafoId": grafo.grafoId,
-                         "nodes": nodes,
-                         "links": aristas,
-        "tiempo": tiempoTotal,
-                         "segmentos": str(clusters)}, safe=False)
-
-def queyrannne(request, id=0):
-    graphs = Graphs.objects.get(grafoId=id)
-    grafos_serializer = GrafoSerializer(graphs, many=False)
-
-    nodos = []
-    aristas = []
-
-    grafo =  grafos_serializer.data
-
-    nodes = grafo["nodes"]
-    links = grafo["links"]
-
-    for client in nodos:
-        if client["id"] not in nodes:
-          nodos.append(client["id"])
-
-    for client in links:
-        dictD = (client["source"],client["target"])
-        aristas.append(dictD)
-
-    G=nx.Graph()
-    G.add_nodes_from(nodos)
-    G.add_edges_from(aristas)
-    #A = nx.adjacency_matrix(G)
-    arr = nx.to_numpy_array(G)
-    tiempoInicio = time.time()
-    segmentos = inicializar(arr)
-    tiempoTotal = time.time() - tiempoInicio
-    cortar = segmentos[len(segmentos)-1] # nodo a cortar
-    #print("NODOS ", G.nodes)
-    nodos = list(G.nodes)
-    posicion = cortar[0]
-    nodocort = nodos[posicion-1]
-    lista = list(segmentos)
-    print("TENGO ", segmentos)
-    print("TENGO ", lista[0])
-    text = "("
-    for i in lista[0]:
-        print(i)
-        text+= str(nodos[i-1]) +", "
-    text+="), ("
-    #print("TEXTO ", text)
-    for i in lista[1]:
-        text+= str(nodos[i-1]) +", "
-    text+=")"
-    print("YA ", text)
-    print("NODO CORTAR ", nodocort)
-    print("TIEMPO ", tiempoTotal)
-    
-    k = 0
-    aux = None
-    grafo = Graphs(grafoName= id+ " Q", nodes=nodes, links=links)
-    #print("TAMAÑO NODOS", len(grafo.nodes))
-    while k < len(grafo.links):
-            if grafo.links[k]["source"] == nodocort or grafo.links[k]["target"] == nodocort:
-                aux = grafo.links[k]
-            if aux is not None:
-                grafo.links.remove(aux)
-            k = k+1
-    return JsonResponse({ "grafoId": grafo.grafoId,
-                         "nodes": grafo.nodes,
-                         "links": grafo.links,
-        "tiempo": tiempoTotal,
-                         "segmentos": text}, safe=False)
-
 
 def export_matriz(request, id = 0):
     graphs = Graphs.objects.get(grafoId=id)
@@ -227,56 +83,6 @@ def export_xml(request, id=0):
     }
 
     return JsonResponse(info, safe=False)
-
-
-def random_graph(request):
-    grafo_data = JSONParser().parse(request)
-    print(grafo_data)
-    cantidad_nodos = int(grafo_data['cant_nodos'])
-    cantidad_aristas = int(grafo_data['cant_aristas'])
-
-    nodos = []
-    links = []
-    nodos_id = []
-    combinaciones = []
-
-    for i in range(1, cantidad_nodos+1):
-        nodos_id.append(i)
-        nodo = {
-            "id": i,
-            "name": "Nodo "+str(i),
-            "label": "N"+str(i),
-            "data": "{}",
-            "type": "",
-            "radius": 12,
-            "coordenates": None
-        }
-
-        nodos.append(nodo)
-    aux = cantidad_aristas
-    while len(combinaciones) < cantidad_aristas:
-        combinacion = random.choices(nodos_id, k=2)
-        if combinacion[0] != combinacion[1]:
-            if [combinacion[0], combinacion[1]] not in combinaciones and [combinacion[1], combinacion[0] not in combinaciones]:
-                combinaciones.append(combinacion)
-                #print("COMBINACION ssss ", len(combinaciones))
-
-    for i in combinaciones:
-        link = {
-            "source": i[0],
-            "target": i[1],
-            "distance": random.randint(1, 200)
-        }
-        links.append(link)
-
-    grafoName = "Random"+str(format(datetime.now()))
-
-    grafo = Graphs(grafoName=grafoName, nodes=nodos, links=links)
-    grafo.save()
-
-    grafos_serializer = GrafoSerializer(grafo, many=False)
-    return JsonResponse(grafos_serializer.data, safe=False)
-
 
 def img_upload(request):
     myfile = request.FILES['myfile']
@@ -383,7 +189,7 @@ def algoritmo_estrella(request):
     #     (int(estado_objetivo[6]), int(estado_objetivo[7]), int(estado_objetivo[8])),
     # ))
     # ep.graficar_estado(estado0)
-    ruta, num= a_e.buscar_con_a_estrella(estado0, ep.gen_estados_alcanzables,
+    ruta, num= a_e.buscar_con_a_estrella(estado0, estadoF,ep.gen_estados_alcanzables,
                                  heuristica=ep.dist_hamming)
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta), "cantidad": num, "longitudSol": len(ruta)}
@@ -404,7 +210,7 @@ def algoritmo_anchura(request):
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
     ruta, num = anchura.buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
-                             ep.es_estado_objetivo)
+                             ep.es_estado_objetivo, estadoF)
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
@@ -419,11 +225,12 @@ def algoritmo_profundidad(request):
     X = ep.HUECO
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
-    ruta, num = profundidad.buscar_en_profundidad_iterativa(
-        estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
+    ruta, num= profundidad.buscar_en_profundidad_iterativa(
+        estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo, estadoF)
     lista = {}
-    lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
-    print(f'Solución de {len(ruta)} pasos')
+    print(ruta)
+    lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}   
+    #print(f'Solución de {len(ruta)} pasos')
     return  JsonResponse(lista, safe=False)
 
 def algoritmo_primero(request):
@@ -436,7 +243,7 @@ def algoritmo_primero(request):
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
     ruta, num = primero_mejor.buscar_primero(estado0, ep.gen_estados_alcanzables,
-                             heuristica=ep.dist_hamming)
+                             estadoF,heuristica=ep.dist_hamming,)
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
