@@ -419,10 +419,10 @@ def algoritmo_profundidad(request):
     X = ep.HUECO
     estado0 = inicializarEstado(estado_inicial)
     estadoF = inicializarEstado(estado_objetivo)
-    ruta = profundidad.buscar_en_profundidad_iterativa(
+    ruta, num = profundidad.buscar_en_profundidad_iterativa(
         estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
     lista = {}
-    lista = {"movimientos": _formatoRuta(ruta)}    
+    lista = {"movimientos": _formatoRuta(ruta),"cantidad": num, "longitudSol": len(ruta)}    
     print(f'Solución de {len(ruta)} pasos')
     return  JsonResponse(lista, safe=False)
 
