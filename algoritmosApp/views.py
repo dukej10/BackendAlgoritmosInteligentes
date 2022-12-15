@@ -73,7 +73,7 @@ def algoritmo_profundidad(request):
     X = ep.HUECO
     estado0 = _inicializarEstado(estado_inicial)
     estadoF = _inicializarEstado(estado_objetivo)
-    ruta, num= profundidad.buscar_en_profundidad_iterativa(
+    ruta, num= profundidad.buscar_en_profundidad(
         estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo, estadoF)
     lista = {}
     print(ruta)

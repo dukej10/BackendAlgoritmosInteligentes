@@ -4,7 +4,7 @@ from bisect import insort
 from collections import deque
 
 from algoritmosApp.utils.indicadores_progreso import ContadorPasos
-from algoritmosApp.utils.nodos import NodoConHeuristica as Nodo, reconstruir_ruta
+from algoritmosApp.nodo import NodoConHeuristica as Nodo, reconstruir_ruta
 
 
 def buscar_primero(estado0, gen_estados_alcanzables, estadoF,heuristica):

@@ -6,7 +6,7 @@ from collections import deque
 from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 
 
-def buscar_en_profundidad_limitada(
+def _buscar_limite_profundidad(
         estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,estadoF,
         contador_pasos=None):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
@@ -53,7 +53,7 @@ def buscar_en_profundidad_limitada(
                 if not ruta:
                     return None  # no resuelto
     
-def buscar_en_profundidad_limitada2(
+def _buscar_profundidad(
         estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,
         estadoF,
         contador_pasos=None):
@@ -104,7 +104,7 @@ def buscar_en_profundidad_limitada2(
                     return None  # no resuelto
 
 
-def buscar_en_profundidad_iterativa(
+def buscar_en_profundidad(
         estado0, gen_estados_alcanzables, es_estado_objetivo, estadoF):
     contador_pasos = ContadorPasos()
     print('Buscando solución...')
@@ -112,12 +112,12 @@ def buscar_en_profundidad_iterativa(
     profundidad = 0
     for max_profundidad in range(1, sys.getrecursionlimit()):
         contador_pasos.send(f'{max_profundidad=}:')
-        if (profundidad := buscar_en_profundidad_limitada(
+        if (profundidad := _buscar_limite_profundidad(
                 estado0, gen_estados_alcanzables, es_estado_objetivo,
                 max_profundidad, estadoF,contador_pasos)):
             break
     print(f'profundidad: {profundidad}')
-    ruta, num = buscar_en_profundidad_limitada2(
+    ruta, num = _buscar_profundidad(
         estado0, gen_estados_alcanzables, es_estado_objetivo, profundidad, estadoF, contador_pasos)
     return ruta, num
 
