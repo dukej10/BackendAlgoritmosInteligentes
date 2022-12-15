@@ -120,24 +120,5 @@ def buscar_en_profundidad_iterativa(
     ruta, num = buscar_en_profundidad_limitada2(
         estado0, gen_estados_alcanzables, es_estado_objetivo, profundidad, estadoF, contador_pasos)
     return ruta, num
-    # if (ruta := buscar_en_profundidad_limitada(
-    #             estado0, gen_estados_alcanzables, es_estado_objetivo,
-    #             100, contador_pasos)):
-    #         return ruta
-    raise RecursionError('se excedió la profundidad máxima')
 
 
-# if __name__ == "__main__":
-#     import utils.eight_puzzle as ep
-
-#     X = ep.HUECO
-#     estado0 = (
-#         (5, 1, 2),
-#         (X, 7, 3),
-#         (6, 4, 8),
-#     )
-#     ep.graficar_estado(estado0)
-#     ruta = buscar_en_profundidad_iterativa(
-#         estado0, ep.gen_estados_alcanzables, ep.es_estado_objetivo)
-#     print(f'Solución de {len(ruta)} pasos')
-#     ep.graficar_ruta(ruta)

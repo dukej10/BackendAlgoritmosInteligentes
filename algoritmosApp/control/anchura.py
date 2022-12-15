@@ -45,18 +45,3 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo, esta
             considerados.add(hijo)
     return None  # no resuelto
 
-
-# if __name__ == "__main__":
-#     import utils.eight_puzzle as ep
-
-#     X = ep.HUECO
-#     estado0 = (
-#         (5, 1, 2),
-#         (X, 7, 3),
-#         (6, 4, 8),
-#     )
-#     ep.graficar_estado(estado0)
-#     ruta = buscar_en_anchura(estado0, ep.gen_estados_alcanzables,
-#                              ep.es_estado_objetivo)
-#     print(f'Solución de {len(ruta)} pasos')
-#     ep.graficar_ruta(ruta)
