@@ -16,31 +16,12 @@ def ContadorPasosSimple():
     """Imprime el número de pasos en líneas separadas."""
     for paso in count(start=1):
         while rec := (yield paso):
-            print(rec)
-        print(paso)
-
-@_corrutina
-def ContadorPasosElaborado():
-    """Imprime el número de pasos en una barra de progreso.
-    
-    Requiere `tqdm`.
-    """
-    from tqdm import tqdm
-    # `tqdm` no funciona correctamente con `itertools`:
-    #return tqdm(count(start=1))
-    t = tqdm(desc='Total')
-    for paso in count(start=1):
-        while rec := (yield paso):
-            print(f'\n{rec}')
-            t.refresh()
-        t.update()
+            continue
+        #print(paso)
 
 
 def ContadorPasos():
     """Crea un iterador que imprime y retorna el número de pasos que lleva un
     algoritmo en cada iteración.
     """
-    try:
-        return ContadorPasosElaborado()
-    except ImportError:
-        return ContadorPasosSimple()
+    return ContadorPasosSimple()
