@@ -78,22 +78,22 @@ def es_estado_objetivo(estado, estadoF):
     return np.array_equal(estado, estadoF)
 
 
-def dist_manhattan(estado, estadoF):
-    """
-    Retorna la distancia Manhattan entre `estado` y el estado objetivo.
+# def dist_manhattan(estado, estadoF):
+#     """
+#     Retorna la distancia Manhattan entre `estado` y el estado objetivo.
     
-    Se define la distancia Manhattan entre dos estados como la suma de las
-    distancias Manhattan entre las posiciones de las fichas en un estado y sus
-    posiciones correspondientes en el otro estado. Por ejemplo, si la ficha 5
-    se encuentra en la posición (1, 3) en un estado y en la posición (4, 2) en
-    el otro estado, la distancia será de |1 - 4| + |3 - 2| = 4; este proceso se
-    realiza para todas las fichas en `estado`.
-    """
-    dist = 0
-    for i, j, val in _iter_matriz(estado):
-        i2, j2 = _buscar_elemento(estadoF, val)
-        dist += abs(i - i2) + abs(j - j2)
-    return dist
+#     Se define la distancia Manhattan entre dos estados como la suma de las
+#     distancias Manhattan entre las posiciones de las fichas en un estado y sus
+#     posiciones correspondientes en el otro estado. Por ejemplo, si la ficha 5
+#     se encuentra en la posición (1, 3) en un estado y en la posición (4, 2) en
+#     el otro estado, la distancia será de |1 - 4| + |3 - 2| = 4; este proceso se
+#     realiza para todas las fichas en `estado`.
+#     """
+#     dist = 0
+#     for i, j, val in _iter_matriz(estado):
+#         i2, j2 = _buscar_elemento(estadoF, val)
+#         dist += abs(i - i2) + abs(j - j2)
+#     return dist
 
 
 def dist_hamming(estado, estadoF):
