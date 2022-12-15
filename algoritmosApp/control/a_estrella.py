@@ -8,7 +8,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 from algoritmosApp.utils.nodos import NodoConCostoCombinado as Nodo, reconstruir_ruta
 
 
-def buscar_con_a_estrella(estado0, estadoF, gen_estados_alcanzables, heuristica):
+def buscar_estrella(estado0, estadoF, gen_estados_alcanzables, heuristica):
     """Retorna la ruta para resolver el problema, o `None` si no se encontró
     una solución.
 

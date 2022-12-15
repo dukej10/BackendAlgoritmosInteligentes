@@ -28,7 +28,7 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo, esta
     frontera = deque([nodo])  # estados por visitar
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
-        #next(contador_pasos)
+    
         nodo = frontera.popleft()
         if nodo not in lista:
             lista.append(nodo)
