@@ -1,22 +1,12 @@
 from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
 # from pyrsistent import T
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-import numpy as np
-import time
-import networkx as nx
-import matplotlib.pyplot as plt
-from django.core.files.storage import FileSystemStorage
-import urllib.request
-import json
-import random
 import algoritmosApp.eight_puzzle as ep
-import algoritmosApp.control.a_estrella as a_e
+import algoritmosApp.control.a_estrella as estrella
 import algoritmosApp.control.anchura as anchura
 import algoritmosApp.control.profundidad as profundidad
 import algoritmosApp.control.primero_mejor as primero_mejor
-from datetime import datetime
 
 
 def _inicializarEstado(estado):
@@ -38,7 +28,7 @@ def algoritmo_estrella(request):
     
     estado0 = _inicializarEstado(estado_inicial)
     estadoF = _inicializarEstado(estado_objetivo)
-    ruta, num= a_e.buscar_estrella(estado0, estadoF,ep.gen_estados_alcanzables,
+    ruta, num= estrella.buscar_estrella(estado0, estadoF,ep.gen_estados_alcanzables,
                                  heuristica=ep.dist_hamming)
     lista = {}
     lista = {"movimientos": _formatoRuta(ruta), "cantidad": num, "longitudSol": len(ruta)}
