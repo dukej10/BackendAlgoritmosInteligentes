@@ -7,27 +7,8 @@
 #pip install djongo
 #pip install dnspython
 
-#posible problema ==>
-
-- pip uninstall pymongo
-- pip install pymongo==3.12.1
-
-# Make migrations
-
-- python manage.py makemigrations algoritmosApp
-- python manage.py migrate
-
 # Ejecutar
 
 - python manage.py runserver
 
-# Librerias para dibujar
-
-- pip install networkx
-- pip install matplotlib
-
-# Libreria PDF
-- pip install reportlab
-
-# Librería xlsx
-- pip install XlsxWriter 
+# link frontend => https://github.com/danielsanchez0/eight_puzzle_frontend
