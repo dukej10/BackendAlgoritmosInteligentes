@@ -21,19 +21,16 @@ def buscar_en_anchura(estado0, gen_estados_alcanzables, es_estado_objetivo, esta
     """
     conteo = 0
     lista = []
-    #contador_pasos = ContadorPasos()
     nodo = Nodo(estado0, padre=None)
     if es_estado_objetivo(estado0, estadoF):
         return reconstruir_ruta(nodo)
     frontera = deque([nodo])  # estados por visitar
     considerados = {estado0}  # estados en la frontera o ya visitados
     while frontera:
-    
         nodo = frontera.popleft()
         if nodo not in lista:
             lista.append(nodo)
             conteo = conteo + 1
-        #hijos = set(gen_estados_alcanzables(nodo.estado)) - considerados
         # Si se desea preservar el orden de los hijos generados:
         hijos = [hijo for hijo in gen_estados_alcanzables(nodo.estado)
                  if hijo not in considerados]

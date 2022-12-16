@@ -4,9 +4,6 @@
 #pip install djangorestframework
 #pip install django-cors-headers
 
-#pip install djongo
-#pip install dnspython
-
 # Ejecutar
 
 - python manage.py runserver

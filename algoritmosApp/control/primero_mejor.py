@@ -19,12 +19,10 @@ def buscar_primero(estado0, gen_estados_alcanzables, estadoF,heuristica):
     """
     lista = []
     conteo = 0
-    #contador_pasos = ContadorPasos()
     frontera = deque([Nodo(estado=estado0, padre=None,
                            dist=heuristica(estado0, estadoF))])
-    considerados = {estado0}  # estados en la frontera o ya visitados
+    considerados = {estado0} 
     while frontera:
-        # next(contador_pasos)
         nodo = frontera.popleft()
         if nodo not in lista:
             lista.append(nodo)
