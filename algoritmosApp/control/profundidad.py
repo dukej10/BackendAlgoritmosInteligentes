@@ -9,8 +9,7 @@ from algoritmosApp.utils.indicadores_progreso import ContadorPasos
 def _buscar_limite_profundidad(
         estado0, gen_estados_alcanzables, es_estado_objetivo, max_profundidad,estadoF,
         contador_pasos=None):
-    """Retorna la ruta para resolver el problema, o `None` si no se encontró
-    una solución.
+    """Retorna la maxima profundiad.
 
     :param `estado0`: estado inicial
     :param `gen_estados_alcanzables` función que recibe un estado y genera los
@@ -25,9 +24,6 @@ def _buscar_limite_profundidad(
     ruta = []
     pendientes = [1]  # `pendientes[i]` es el número de hijos de `ruta[i-1]`
                       # pendientes por visitar
-
-    # FIXME: no encuentra la solución si el estado inicial es el estado
-    # objetivo
     print('Buscando solución...')
     for pasos in contador_pasos or ContadorPasos():
         estado = frontera.pop()
